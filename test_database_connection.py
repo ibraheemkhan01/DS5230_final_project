@@ -1,26 +1,26 @@
+import os
+from dotenv import load_dotenv
 import psycopg2
 
-# Connection details (replace with your values)
-HOST = "car-analytics-db.copkksw0o3bx.us-east-1.rds.amazonaws.com"
-PORT = 5432
-DATABASE = "car_analytics_db"
-USER = "ds5230_postgres"
-PASSWORD = "Nu_9nfi3!o12"
+# Load environment variables
+load_dotenv()
 
 try:
     conn = psycopg2.connect(
-        host=HOST,
-        port=PORT,
-        database=DATABASE,
-        user=USER,
-        password=PASSWORD
+        host=os.getenv('DB_HOST'),
+        port=os.getenv('DB_PORT'),
+        database=os.getenv('DB_NAME'),
+        user=os.getenv('DB_USER'),
+        password=os.getenv('DB_PASSWORD')
     )
     print("✅ Connected to AWS RDS!")
     
     cursor = conn.cursor()
     cursor.execute("SELECT version();")
-    print(f"PostgreSQL version: {cursor.fetchone()[0]}")
+    version = cursor.fetchone()[0]
+    print(f"PostgreSQL version: {version}")
     
+    cursor.close()
     conn.close()
 except Exception as e:
     print(f"❌ Connection failed: {e}")
