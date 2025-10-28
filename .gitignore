@@ -1,0 +1,37 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+.Python
+env/
+venv/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# CSV data
+*.csv
+
+# Environment variables
+.env
+*.env
+
+# Text files with credentials
+*.txt
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Credentials
+*password*
+*secret*
+config.json
