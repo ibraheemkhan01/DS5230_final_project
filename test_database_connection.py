@@ -1,17 +1,22 @@
-import os
-from dotenv import load_dotenv
 import psycopg2
+import getpass
 
-# Load environment variables
-load_dotenv()
+# Hardcode non-sensitive info
+DB_HOST = "car-analytics-db.copkksw0o3bx.us-east-1.rds.amazonaws.com"
+DB_PORT = 5432
+DB_NAME = "car_analytics_db"
+DB_USER = "ds5230_postgres"
+
+# Prompt for password (hidden typing)
+password = getpass.getpass("Enter database password: ")
 
 try:
     conn = psycopg2.connect(
-        host=os.getenv('DB_HOST'),
-        port=os.getenv('DB_PORT'),
-        database=os.getenv('DB_NAME'),
-        user=os.getenv('DB_USER'),
-        password=os.getenv('DB_PASSWORD')
+        host=DB_HOST,
+        port=DB_PORT,
+        database=DB_NAME,
+        user=DB_USER,
+        password=password
     )
     print("✅ Connected to AWS RDS!")
     
