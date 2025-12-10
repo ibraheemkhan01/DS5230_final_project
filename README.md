@@ -1,4 +1,4 @@
-# Vehicle Analytics & Recommendation System
+# Car Data Machine Learning & Recommendation System
 Unsupervised ML · Deep Learning · Clustering · PCA · Collaborative Filtering
 
 This repository contains the full pipeline for our vehicle analytics project, including data ingestion, preprocessing, clustering, recommendation systems, and deep-learning embeddings.  
