@@ -1,52 +1,161 @@
-# Project Files Documentation
+Vehicle Analytics & Recommendation System
 
-## File Descriptions
+Unsupervised ML · Clustering · PCA · Collaborative Filtering · Deep Learning
 
-### columns_all_tables.sql
-**Purpose:** Query for columns
+This repository contains the full pipeline for our vehicle-analytics project, including data ingestion, preprocessing, clustering, recommendation systems, and deep-learning embeddings.
+It supports PostgreSQL (local + AWS RDS), Kaggle dataset ingestion, and multiple ML experiments developed through Jupyter notebooks.
 
-SQL query file used to retrieve column information across all tables in the database schema.
+Repository Structure
+Datasets & Raw Assets
+cars_with_coords.csv
 
----
+Cleaned dataset with geolocation fields used for clustering, PCA, and deep-learning experiments.
 
-### create_schema.py
-**Purpose:** Create a schema for the table in our local Postgres database
+SQL Files
+columns_all_tables.sql
 
-Python script responsible for creating and managing database schemas. This replaces previous notebook-based approaches with a more maintainable script format.
+Query to list all columns across all tables in the connected Postgres schema.
 
----
+uci_data_profiling.sql
 
-### datasets.ipynb 
-**Purpose:** Setting a base line code to pull the data table from Kaggle into Postgres and display the data on Jupyter Notebook
+Initial profiling queries used for the UCI Automobile dataset.
+Part of the first RDS setup and schema verification.
 
-Jupyter notebook containing codes that allow the user to pull dataset from Kaggle down into the local Postgres database and do queries.
+Python Scripts
+create_schema.py
 
----
+Creates the project’s database schema in Postgres.
+Replaces earlier ad-hoc SQL blocks or notebooks and ensures reproducible schema creation.
 
-### geo_clustering.ipynb
-**Purpose:** geo clustering Reference
+test_database_connection.py
 
-Jupyter notebook serving as a reference implementation for geographical clustering analysis. Contains methods and examples for clustering data based on geographic coordinates.
+Simple connectivity test to the Postgres instance (local or AWS RDS).
+Supports .env files for credentials.
 
----
+Jupyter Notebooks
+datasets.ipynb
 
-### item_based_collab_filter.ipynb
-**Purpose:** collaborative filtering for Recommender
+End-to-end pipeline for:
 
-Jupyter notebook implementing item-based collaborative filtering algorithms. Recently completed with the final version of the recommendation system.
+Pulling Kaggle datasets using API/KaggleHub
 
----
+Loading them into Postgres
 
-### test_database_connection.py 
-**Purpose:** To test the connect to the local Postgres database server with .env support
+Performing basic previews & sanity checks
 
-Python script for testing database connectivity. Enhanced to support environment variable configuration through .env files for secure credential management.
+This notebook establishes the project’s data baseline.
 
----
+geo_clustering.ipynb
 
-### uci_data_profiling.sql
-**Purpose:** Initial commit: project setup with AWS RDS
+Reference implementation for geographical clustering, including experiments with:
 
-SQL file for profiling UCI dataset tables. Part of the initial project setup configured to work with AWS RDS (Relational Database Service).
+Latitude/longitude cleaning
 
----
+K-means and GMM clustering
+
+Visualizing cluster regions
+
+item_based_collab_filter.ipynb
+
+Core implementation of the item-based collaborative filtering recommender:
+
+User preference template
+
+Similarity computation (cosine)
+
+Filtering by price/year/odometer ranges
+
+Top-N recommendation output
+
+Fully functional & tested with final results.
+
+mvp_clustering_before_cleaning.ipynb
+
+Intermediate notebook containing clustering experiments before full preprocessing.
+Useful for comparing raw vs cleaned data behavior.
+
+mvp_cars_final_Deep_learning.ipynb
+
+Final notebook implementing the deep learning autoencoder, including:
+
+71-dimensional input pipeline
+
+Encoder → latent (16-dim embeddings) → decoder architecture
+
+Reconstruction loss
+
+Embedding extraction for similarity search
+
+Comparison vs collaborative filtering
+
+PCA visualization of learned embeddings
+
+This is the model used to cross-validate the cluster structure independently of GMM.
+
+Supporting Files
+.gitignore
+
+Standard ignore rules for Python/Jupyter/virtual-envs and datasets.
+
+Project Overview
+
+This repo implements the full analytical stack for used-vehicle market segmentation and recommendation:
+
+1. Data Cleaning & Integration
+
+Combining 3+ Kaggle datasets
+
+Handling 30–40% missing values
+
+Fixing invalid geolocation points
+
+Encoding categorical variables
+
+Standardized scaling
+
+2. Unsupervised Learning
+
+PCA for dimensionality reduction (18 components → 95% variance explained)
+
+K-Means and Gaussian Mixture Models (GMM)
+
+Identification of 5–11 market clusters depending on feature engineering
+
+Discovery of anomalous vehicles (e.g., Ferrari outlier)
+
+3. Recommender Systems
+
+Item-based collaborative filtering
+
+Cosine similarity over normalized feature sets
+
+Range-based filtering on price, year, mileage
+
+4. Deep Learning Autoencoder
+
+71 → 128 → 64 → 16-dim latent space → 64 → 128 → 71
+
+Embedding-based similarity recommendations
+
+PCA visualization shows latent clustering consistent with GMM
+
+5. Results
+
+Collaborative filtering and deep learning agree on 4/5 recommendations
+
+GMM captures overlapping clusters better than K-means
+
+PCA reveals meaningful axes: drive type, age-value tradeoff, engine efficiency
+
+Future Improvements
+
+User vs item-based filtering
+
+Add Streamlit UI for user interaction
+
+Build automated pipelines for cleaning & model training
+
+Team
+
+Ibraheem Khan, Sristi Prasad, Patrick Nguyen
+Northeastern University – DS5230
