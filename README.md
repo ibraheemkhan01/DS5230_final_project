@@ -1,5 +1,5 @@
 # Vehicle Analytics & Recommendation System
-Unsupervised ML · Clustering · PCA · Collaborative Filtering · Deep Learning
+Unsupervised ML · Deep Learning · Clustering · PCA · Collaborative Filtering
 
 This repository contains the full pipeline for our vehicle analytics project, including data ingestion, preprocessing, clustering, recommendation systems, and deep-learning embeddings.  
 It supports PostgreSQL (local + AWS RDS), Kaggle dataset ingestion, and multiple ML experiments developed through Jupyter notebooks.
