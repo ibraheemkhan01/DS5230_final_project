@@ -1,163 +1,135 @@
-🏎️ Vehicle Analytics & Recommendation System
-
+# Vehicle Analytics & Recommendation System
 Unsupervised ML · Clustering · PCA · Collaborative Filtering · Deep Learning
 
-This repository contains the full pipeline for our vehicle-analytics project, including data ingestion, preprocessing, clustering, recommendation systems, and deep-learning embeddings.
+This repository contains the full pipeline for our vehicle analytics project, including data ingestion, preprocessing, clustering, recommendation systems, and deep-learning embeddings.  
 It supports PostgreSQL (local + AWS RDS), Kaggle dataset ingestion, and multiple ML experiments developed through Jupyter notebooks.
 
-📁 Repository Structure
-Datasets & Raw Assets
-cars_with_coords.csv
+---
 
+## Repository Structure
+
+### Datasets & Raw Assets
+
+#### `cars_with_coords.csv`
 Cleaned dataset with geolocation fields used for clustering, PCA, and deep-learning experiments.
 
-📘 SQL Files
-columns_all_tables.sql
+---
 
-Query to list all columns across all tables in the connected Postgres schema.
+## SQL Files
 
-uci_data_profiling.sql
+### `columns_all_tables.sql`
+Lists all columns across all tables in the Postgres schema.
 
-Initial profiling queries used for the UCI Automobile dataset.
-Part of the first RDS setup and schema verification.
+### `uci_data_profiling.sql`
+Initial profiling queries for the UCI Automobile dataset.  
+Used during early AWS RDS schema validation.
 
-🐍 Python Scripts
-create_schema.py
+---
 
-Creates the project’s database schema in Postgres.
-Replaces earlier ad-hoc SQL blocks or notebooks and ensures reproducible schema creation.
+## Python Scripts
 
-test_database_connection.py
+### `create_schema.py`
+Creates the project's database schema in Postgres.  
+Ensures consistent and reproducible table creation.
 
-Simple connectivity test to the Postgres instance (local or AWS RDS).
-Supports .env files for credentials.
+### `test_database_connection.py`
+Tests database connectivity to local or AWS RDS Postgres.  
+Supports `.env` credential configuration.
 
-📓 Jupyter Notebooks
-datasets.ipynb
+---
 
-End-to-end pipeline for:
+## Jupyter Notebooks
 
-Pulling Kaggle datasets using API/KaggleHub
+### `datasets.ipynb`
+Baseline end-to-end data pipeline:
+- Pull Kaggle datasets using API/KaggleHub  
+- Load datasets into Postgres  
+- Preview and validate data  
 
-Loading them into Postgres
+---
 
-Performing basic previews & sanity checks
+### `geo_clustering.ipynb`
+Reference notebook for geographical clustering:
+- Latitude/longitude cleaning  
+- K-Means and GMM clustering  
+- Visual cluster analysis  
 
-This notebook establishes the project’s data baseline.
+---
 
-geo_clustering.ipynb
+### `item_based_collab_filter.ipynb`
+Implements item-based collaborative filtering:
+- User preference template  
+- Cosine similarity scoring  
+- Range filtering (price, year, mileage)  
+- Top-N recommendation output  
 
-Reference implementation for geographical clustering, including experiments with:
+---
 
-Latitude/longitude cleaning
+### `mvp_clustering_before_cleaning.ipynb`
+Contains early clustering experiments **before** full preprocessing, useful for comparing raw vs cleaned data behavior.
 
-K-means and GMM clustering
+---
 
-Visualizing cluster regions
+### `mvp_cars_final_Deep_learning.ipynb`
+Implements the final deep learning autoencoder:
+- 71-dimensional input  
+- Encoder → 16-dim latent space → decoder  
+- Reconstruction loss  
+- Embedding extraction for similarity search  
+- PCA visualization of latent embeddings  
+- Comparison vs collaborative filtering recommendations  
 
-item_based_collab_filter.ipynb
+---
 
-Core implementation of the item-based collaborative filtering recommender:
+## Project Overview
 
-User preference template
+This repository implements the full analytical workflow for market segmentation and vehicle recommendation.
 
-Similarity computation (cosine)
+### 1. Data Cleaning & Integration
+- Merged multiple Kaggle datasets  
+- Handled 30–40% missing values  
+- Fixed invalid geographic points  
+- Encoded categorical variables  
+- Standard scaling  
 
-Filtering by price/year/odometer ranges
+### 2. Unsupervised Learning
+- PCA for dimensionality reduction  
+- K-Means clustering  
+- Gaussian Mixture Models (GMM)  
+- Identification of 5–11 clusters depending on preprocessing  
+- Detection of outliers (e.g., Ferrari luxury outlier)  
 
-Top-N recommendation output
+### 3. Recommender Systems
+- Item-based collaborative filtering  
+- Cosine similarity across standardized features  
+- Top-N recommendations  
 
-Fully functional & tested with final results.
+### 4. Deep Learning Autoencoder
+- Network: 71 → 128 → 64 → 16 → 64 → 128 → 71  
+- Extracts meaningful latent embeddings  
+- Embedding-based similarity search  
+- PCA visualization shows structure similar to GMM clusters  
 
-mvp_clustering_before_cleaning.ipynb
-
-Intermediate notebook containing clustering experiments before full preprocessing.
-Useful for comparing raw vs cleaned data behavior.
-
-mvp_cars_final_Deep_learning.ipynb
-
-Final notebook implementing the deep learning autoencoder, including:
-
-71-dimensional input pipeline
-
-Encoder → latent (16-dim embeddings) → decoder architecture
-
-Reconstruction loss
-
-Embedding extraction for similarity search
-
-Comparison vs collaborative filtering
-
-PCA visualization of learned embeddings
-
-This is the model used to cross-validate the cluster structure independently of GMM.
-
-🗃️ Supporting Files
-.gitignore
-
-Standard ignore rules for Python/Jupyter/virtual-envs and datasets.
-
-🚀 Project Overview
-
-This repo implements the full analytical stack for used-vehicle market segmentation and recommendation:
-
-🔹 1. Data Cleaning & Integration
-
-Combining 3+ Kaggle datasets
-
-Handling 30–40% missing values
-
-Fixing invalid geolocation points
-
-Encoding categorical variables
-
-Standardized scaling
-
-🔹 2. Unsupervised Learning
-
-PCA for dimensionality reduction (18 components → 95% variance explained)
-
-K-Means and Gaussian Mixture Models (GMM)
-
-Identification of 5–11 market clusters depending on feature engineering
-
-Discovery of anomalous vehicles (e.g., Ferrari outlier)
-
-🔹 3. Recommender Systems
-
-Item-based collaborative filtering
-
-Cosine similarity over normalized feature sets
-
-Range-based filtering on price, year, mileage
-
-🔹 4. Deep Learning Autoencoder
-
-71 → 128 → 64 → 16-dim latent space → 64 → 128 → 71
-
-Embedding-based similarity recommendations
-
-PCA visualization shows latent clustering consistent with GMM
-
-🔹 5. Results
-
-Collaborative filtering and deep learning agree on 4/5 recommendations
-
-GMM captures overlapping clusters better than K-means
-
-PCA reveals meaningful axes: drive type, age-value tradeoff, engine efficiency
-
-📦 Future Improvements
-
-Deploy the recommender via FastAPI
-
-Add Streamlit UI for user interaction
-
-Serve embeddings via vector database (FAISS or pgvector)
-
-Build automated pipelines for cleaning & model training
-
-🙌 Team
-
-Ibraheem Khan, Sristi Prasad, Patrick Nguyen
+### 5. Results Summary
+- Deep learning and CF recommenders agree on 4/5 results  
+- GMM captures overlapping clusters more naturally than K-Means  
+- PCA reveals interpretable axes:
+  - Drive configuration  
+  - Age-value tradeoff  
+  - Engine efficiency  
+
+---
+
+## Future Improvements
+- Deploy recommender with FastAPI  
+- Add Streamlit user interface  
+- Vector embeddings served via FAISS or pgvector  
+- Automated cleaning + model training pipelines  
+
+---
+
+## Team
+Ibraheem Khan  
+Sristi Prasad  
+Patrick Nguyen  
 Northeastern University – DS5230
