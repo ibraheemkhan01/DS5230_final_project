@@ -1,161 +1,136 @@
 Vehicle Analytics & Recommendation System
 
-Unsupervised ML · Clustering · PCA · Collaborative Filtering · Deep Learning
+Unsupervised ML • Clustering • PCA • Collaborative Filtering • Deep Learning
 
-This repository contains the full pipeline for our vehicle-analytics project, including data ingestion, preprocessing, clustering, recommendation systems, and deep-learning embeddings.
-It supports PostgreSQL (local + AWS RDS), Kaggle dataset ingestion, and multiple ML experiments developed through Jupyter notebooks.
+This repository contains the full pipeline for a vehicle-analytics project, including data ingestion, preprocessing, clustering, recommendation systems, and deep-learning embeddings. It supports PostgreSQL (local and AWS RDS), Kaggle dataset ingestion, and multiple ML experiments developed through Jupyter notebooks.
 
 Repository Structure
 Datasets & Raw Assets
-cars_with_coords.csv
 
+cars_with_coords.csv
 Cleaned dataset with geolocation fields used for clustering, PCA, and deep-learning experiments.
 
 SQL Files
-columns_all_tables.sql
 
+columns_all_tables.sql
 Query to list all columns across all tables in the connected Postgres schema.
 
 uci_data_profiling.sql
-
-Initial profiling queries used for the UCI Automobile dataset.
-Part of the first RDS setup and schema verification.
+Initial profiling queries for the UCI Automobile dataset. Used during the first RDS setup and schema validation.
 
 Python Scripts
-create_schema.py
 
-Creates the project’s database schema in Postgres.
-Replaces earlier ad-hoc SQL blocks or notebooks and ensures reproducible schema creation.
+create_schema.py
+Creates the project’s database schema in Postgres. Replaces earlier notebook-based schema setup.
 
 test_database_connection.py
-
-Simple connectivity test to the Postgres instance (local or AWS RDS).
-Supports .env files for credentials.
+Tests connectivity to the Postgres instance (local or AWS RDS). Supports .env file credential loading.
 
 Jupyter Notebooks
+
 datasets.ipynb
-
-End-to-end pipeline for:
-
-Pulling Kaggle datasets using API/KaggleHub
-
-Loading them into Postgres
-
-Performing basic previews & sanity checks
-
-This notebook establishes the project’s data baseline.
+End-to-end pipeline for pulling Kaggle datasets, loading them into Postgres, and performing initial exploration.
 
 geo_clustering.ipynb
-
-Reference implementation for geographical clustering, including experiments with:
-
-Latitude/longitude cleaning
-
-K-means and GMM clustering
-
-Visualizing cluster regions
+Reference implementation for geographic clustering, including coordinate cleaning, K-means, GMM, and cluster visualization.
 
 item_based_collab_filter.ipynb
+Implements the item-based collaborative filtering recommender system:
 
-Core implementation of the item-based collaborative filtering recommender:
+user preference input
 
-User preference template
+cosine similarity
 
-Similarity computation (cosine)
+filtering by price, year, odometer
 
-Filtering by price/year/odometer ranges
-
-Top-N recommendation output
-
-Fully functional & tested with final results.
+top-N recommendation output
 
 mvp_clustering_before_cleaning.ipynb
-
-Intermediate notebook containing clustering experiments before full preprocessing.
-Useful for comparing raw vs cleaned data behavior.
+Early clustering experiments before full data preprocessing. Useful for comparing raw vs cleaned outcomes.
 
 mvp_cars_final_Deep_learning.ipynb
+Final deep-learning notebook implementing the autoencoder architecture:
 
-Final notebook implementing the deep learning autoencoder, including:
+71-dimensional input
 
-71-dimensional input pipeline
+128 → 64 → 16 latent → 64 → 128 layers
 
-Encoder → latent (16-dim embeddings) → decoder architecture
+reconstruction loss
 
-Reconstruction loss
-
-Embedding extraction for similarity search
-
-Comparison vs collaborative filtering
+embedding extraction for recommendation
 
 PCA visualization of learned embeddings
 
-This is the model used to cross-validate the cluster structure independently of GMM.
-
-Supporting Files
-.gitignore
-
-Standard ignore rules for Python/Jupyter/virtual-envs and datasets.
+cross-validation against GMM clusters
 
 Project Overview
+1. Data Cleaning and Integration
 
-This repo implements the full analytical stack for used-vehicle market segmentation and recommendation:
+Combined several Kaggle datasets
 
-1. Data Cleaning & Integration
+Addressed 30–40% missing values
 
-Combining 3+ Kaggle datasets
+Corrected invalid geolocation points
 
-Handling 30–40% missing values
+Encoded categorical variables
 
-Fixing invalid geolocation points
+Applied standardized scaling
 
-Encoding categorical variables
-
-Standardized scaling
+Engineered new features for clustering and PCA
 
 2. Unsupervised Learning
 
-PCA for dimensionality reduction (18 components → 95% variance explained)
+PCA for dimensionality reduction (18 components explain 95% variance)
 
-K-Means and Gaussian Mixture Models (GMM)
+K-Means and Gaussian Mixture Models
 
-Identification of 5–11 market clusters depending on feature engineering
+Identification of 5–11 meaningful market clusters
 
-Discovery of anomalous vehicles (e.g., Ferrari outlier)
+Discovery of anomalies and outlier vehicles
 
 3. Recommender Systems
 
 Item-based collaborative filtering
 
-Cosine similarity over normalized feature sets
+Cosine similarity over normalized features
 
-Range-based filtering on price, year, mileage
+Range filtering for price, year, and odometer
+
+Top-N recommendation results
 
 4. Deep Learning Autoencoder
 
-71 → 128 → 64 → 16-dim latent space → 64 → 128 → 71
+Encoder: 71 → 128 → 64 → 16 latent
 
-Embedding-based similarity recommendations
+Decoder: 16 → 64 → 128 → 71
 
-PCA visualization shows latent clustering consistent with GMM
+Latent embeddings used for similarity search
 
-5. Results
+Recommendations compared with collaborative filtering
 
-Collaborative filtering and deep learning agree on 4/5 recommendations
+PCA visualization confirms clustering consistency with GMM
 
-GMM captures overlapping clusters better than K-means
+5. Key Results
 
-PCA reveals meaningful axes: drive type, age-value tradeoff, engine efficiency
+Collaborative filtering and deep learning agree on 4 of 5 recommendations
+
+GMM produces cleaner, probabilistic, and more realistic clusters
+
+PCA reveals meaningful axes such as drive type, age-value patterns, and engine characteristics
 
 Future Improvements
 
-User vs item-based filtering
+Deploy the recommender using FastAPI
 
-Add Streamlit UI for user interaction
+Add a Streamlit web interface for user interaction
 
-Build automated pipelines for cleaning & model training
+Introduce a vector database (FAISS or pgvector) for embedding search
+
+Build automated preprocessing and model-training pipelines
 
 Team
 
-Ibraheem Khan, Sristi Prasad, Patrick Nguyen
+Ibraheem Khan
+Sristi Prasad
+Patrick Nguyen
 Northeastern University – DS5230
